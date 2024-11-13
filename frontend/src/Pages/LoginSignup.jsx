@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './CSS/LoginSignup.css'
 
 const LoginSignup = () => {
+  const [view, setView] = useState('signin');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [isChecked, setIsChecked] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -51,30 +52,74 @@ const LoginSignup = () => {
       console.log("Successfully registered. Tranfer to login page")
     }
   }
+  const resetForm = () =>{
+    setFormValues({
+      userName: '',
+      userEmailAddress: '',
+      userPassword: '',
+      userPasswordRewrite: ''
+    });
+    setInputCorrectness({
+      isValidEmail: true,
+      passwordConsistency: true,
+      ifAnyEmpty: false,
+      isCheckedCorrectness: true
+    });
+  }
+  const shiftToLogin = () =>{
+    console.log("login");
+    resetForm();
+    setView('login'); 
+  }
+  const shiftToSignin = () =>{
+    console.log("Signin");
+    resetForm();
+    setView('signin'); 
+  }
   return (
-    <div className='loginsignup'>
-      <div className="loginsignup-container">
-        <h1>Sign Up</h1>
-        <div className="loginsignup-fields">
-          <input type="text" value={formValues.userName} onChange={(event) => handleChange('userName', event)} placeholder='Your Name' />
-          <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
-          {!inputCorrectnessCheck.isValidEmail && <p style={{ color: 'red' }}>Please type a valid email address</p>}
-          <input type="password" value={formValues.userPassword} onChange={(event) => handleChange('userPassword', event)} placeholder='Password' />
-          <input type="password" value={formValues.userPasswordRewrite} onChange={(event) => handleChange('userPasswordRewrite', event)} placeholder='Repeat Password' />
-          {!inputCorrectnessCheck.passwordConsistency && <p style={{ color: 'red' }}>The password is not correctly typed, please check again</p>}
+    <div>
+      {view === 'signin' && (
+        <div className='loginsignup'>
+          <div className="loginsignup-container">
+            <h1>Sign Up</h1>
+            <div className="loginsignup-fields">
+              <input type="text" value={formValues.userName} onChange={(event) => handleChange('userName', event)} placeholder='Your Name' />
+              <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
+              {!inputCorrectnessCheck.isValidEmail && <p style={{ color: 'red' }}>Please type a valid email address</p>}
+              <input type="password" value={formValues.userPassword} onChange={(event) => handleChange('userPassword', event)} placeholder='Password' />
+              <input type="password" value={formValues.userPasswordRewrite} onChange={(event) => handleChange('userPasswordRewrite', event)} placeholder='Repeat Password' />
+              {!inputCorrectnessCheck.passwordConsistency && <p style={{ color: 'red' }}>The password is not correctly typed, please check again</p>}
+            </div>
+            <button onClick={continueSignin}>Continue</button>
+            {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
+            <p className="loginsignup-login">Already have an account? <span onClick={shiftToLogin}>Login here</span></p>
+            <div className="loginsignup-agree">
+              <input type="checkbox" 
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+              name='' id='' />
+              <p>By continuing, i agree to the terms of use & privacy policy.</p>
+              {!inputCorrectnessCheck.isCheckedCorrectness && <p style={{ color: 'red' }}>Please agree our privacy policy to continue</p>}
+            </div>
+          </div>
         </div>
-        <button onClick={continueSignin}>Continue</button>
-        {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-        <p className="loginsignup-login">Already have an account? <span>Login here</span></p>
-        <div className="loginsignup-agree">
-          <input type="checkbox" 
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          name='' id='' />
-          <p>By continuing, i agree to the terms of use & privacy policy.</p>
-          {!inputCorrectnessCheck.isCheckedCorrectness && <p style={{ color: 'red' }}>Please agree our privacy policy to continue</p>}
+      )}
+      {view === 'login' && (
+        <div className='loginsignup'>
+          <div className="loginsignup-container">
+            <h1>Log In</h1>
+            <div className="loginsignup-fields">
+              <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
+              {!inputCorrectnessCheck.isValidEmail && <p style={{ color: 'red' }}>Please type a valid email address</p>}
+              <input type="password" value={formValues.userPassword} onChange={(event) => handleChange('userPassword', event)} placeholder='Password' />
+              {/* {!inputCorrectnessCheck.passwordConsistency && <p style={{ color: 'red' }}>The password is not correctly typed, please check again</p>} */}
+            </div>
+            <button onClick={continueSignin}>Login</button>
+            {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
+            <p className="loginsignup-login"><span onClick={shiftToSignin}>Create new account here</span></p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
