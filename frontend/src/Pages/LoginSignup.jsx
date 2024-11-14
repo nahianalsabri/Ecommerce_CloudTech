@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './CSS/LoginSignup.css'
+import { Link } from 'react-router-dom'
 
 const LoginSignup = () => {
   const [view, setView] = useState('signin');
@@ -49,7 +50,8 @@ const LoginSignup = () => {
     //**********//
     // Transfer to login page
     if (setIsValidEmail && setPasswordConsistency && !setIfAnyEmpty && setIsCheckedCorrectness){
-      console.log("Successfully registered. Tranfer to login page")
+      console.log("Successfully registered. Tranfer to login page");
+      shiftToLogin();
     }
   }
   const resetForm = () =>{
@@ -67,12 +69,10 @@ const LoginSignup = () => {
     });
   }
   const shiftToLogin = () =>{
-    console.log("login");
     resetForm();
     setView('login'); 
   }
   const shiftToSignin = () =>{
-    console.log("Signin");
     resetForm();
     setView('signin'); 
   }
@@ -92,7 +92,7 @@ const LoginSignup = () => {
             </div>
             <button onClick={continueSignin}>Continue</button>
             {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-            <p className="loginsignup-login">Already have an account? <span onClick={shiftToLogin}>Login here</span></p>
+            <p className="loginsignup-login">Already have an account? <span><Link onClick={shiftToLogin}>Login here</Link></span></p>
             <div className="loginsignup-agree">
               <input type="checkbox" 
               checked={isChecked}
@@ -116,7 +116,7 @@ const LoginSignup = () => {
             </div>
             <button onClick={continueSignin}>Login</button>
             {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-            <p className="loginsignup-login"><span onClick={shiftToSignin}>Create new account here</span></p>
+            <p className="loginsignup-login"><span><Link onClick={shiftToSignin}>Create new account here</Link></span></p>
           </div>
         </div>
       )}
