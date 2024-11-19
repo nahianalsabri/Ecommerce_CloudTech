@@ -1,0 +1,151 @@
+.loginsignupseller{
+    width: 100%;
+    min-height: 100vh;
+    background: #fce3fe;
+    padding-top: 100px;
+}
+.loginsignupseller-container{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1210px;
+    background: white;
+    margin: auto;
+    padding: 30px 40px;
+    box-sizing: border-box;
+}
+.loginsignupseller-container h1{
+    margin: 15px 0px;
+}
+.loginsignupseller-fields{
+    display: flex;
+    align-items: center;
+    width: 95%;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+.loginsignupseller-fields input{
+    height: 60px;
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid #c9c9c9;
+    outline: none;
+    color: #5c5c5c;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+.loginsignupseller-fields textarea{
+    height: 300px;
+    width: 100%;
+    padding-left: 20px;
+    color: #5c5c5c;
+    font-size: 18px;
+    border: 1px solid #c9c9c9;
+    outline: none;
+    overflow: auto;
+    resize: none;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+}
+.loginsignupseller-fields button{
+    width: 50%;
+    height: 60px;
+    color: white;
+    background: #ff4141;
+    margin-top: 30px;
+    border: none;
+    font-size: 22px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.loginsignupseller-login{
+    margin-top: 20px;
+    color: #5c5c5c;
+    font-size: 16px;
+    font-weight: 500;
+}
+.loginsignupseller-login span{
+    color: #ff4141;
+    font-weight: 600;
+    text-decoration: underline;
+}
+.loginsignupseller-agree{
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    gap: 10px;
+    color: #5c5c5c;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.dashboard-fields{
+    display: flex;
+    align-items: center;
+    width: 45%;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 20px;
+}
+.dashboard-fields input{
+    height: 60px;
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid #c9c9c9;
+    outline: none;
+    color: #5c5c5c;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+.dashboard-fields textarea{
+    height: 250px;
+    width: 100%;
+    padding-left: 20px;
+    color: #5c5c5c;
+    font-size: 18px;
+    border: 1px solid #c9c9c9;
+    outline: none;
+    overflow: auto;
+    resize: none;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    padding-right: 30px;
+}
+.right {
+    flex: 1;
+    gap: 20px;
+    padding-left: 30px;
+}
+
+@media(max-width: 600px){
+    .loginsignupseller-container h1{
+        font-size: 22px;
+        margin: 0px;
+    }
+    .loginsignupseller-container{
+        padding: 30px 20px;
+    }
+    .loginsignupseller-fields input{
+        padding-left: 10px;
+        font-size: 16px;
+        height: 50px;
+    }
+    .loginsignupseller-fields{
+        gap: 15px;
+    }
+    .loginsignupseller-container button{
+        height: 50px;
+        margin-top: 20px;
+        font-size: 17px;
+    }
+}

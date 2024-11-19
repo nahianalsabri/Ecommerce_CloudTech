@@ -1,16 +1,18 @@
 import React, {useState} from 'react'
-import './CSS/LoginSignup.css'
-import { resetPWD, getTemplateAddress, checkOTP, resetOTP } from '../Components/Registration/registration'
-import { Link, useNavigate } from 'react-router-dom';
+import '../CSS/LoginSignup.css'
+import { resetPWD, getTemplateAddress, checkOTP, resetOTP } from '../../Components/Registration/registration'
+import { resetPWD_seller, getTemplateAddress_seller, checkOTP_seller, resetOTP_seller } from '../../Components/Registration/registration_seller'
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Resetpassword = () => {
+    const {role} = useParams();
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         OTPcode: '',
-        userEmailAddress: getTemplateAddress(),
+        userEmailAddress: (role === "customer") ? getTemplateAddress() : getTemplateAddress_seller(),
         userPassword: '',
         userPasswordReapt: ''
-      });
+    });
     const [inputCorrectnessCheck, setInputCorrectness] = useState({
         isValidOTP: true, // Check if OTP is correctly matched
         passwordConsistency: true, // Check if input password 
@@ -24,7 +26,7 @@ const Resetpassword = () => {
     }
 
     const continueLogin = () => {
-        const setIsValidOTP = checkOTP(formValues.OTPcode); // WE get OTP from backend API, currently set true
+        const setIsValidOTP = (role === "customer") ? checkOTP(formValues.OTPcode) : checkOTP_seller(formValues.OTPcode); // WE get OTP from backend API, currently set true
         const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordReapt);
         const setIfAnyEmpty = (formValues.OTPcode.trim() === "" ||  
                             formValues.userPassword.trim() === "" || 
@@ -39,8 +41,15 @@ const Resetpassword = () => {
                 userEmailAddress: formValues.userEmailAddress,
                 userPassword: formValues.userPassword
             }
-            resetPWD(registration_information);
-            navigate("/login");
+            if (role === "cutomer"){            
+                resetOTP()
+                resetPWD(registration_information);
+            }
+            else if(role === "seller"){
+                resetOTP_seller()
+                resetPWD_seller(registration_information);
+            }
+            navigate(`/login_${role}`);
         }
     }
     return (

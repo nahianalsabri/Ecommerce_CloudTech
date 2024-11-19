@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import './CSS/LoginSignup.css'
+import '../CSS/LoginSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {register} from '../Components/Registration/registration'
+import {register} from '../../Components/Registration/registration'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -29,10 +29,6 @@ const Signup = () => {
       });
   }
   const continueSignin = () =>{
-    console.log(formValues.userName);
-    console.log(formValues.userEmailAddress);
-    console.log(formValues.userPassword);
-    console.log(formValues.userPasswordRewrite);
     // Check login information correctness
     const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
     const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordRewrite);
@@ -58,7 +54,7 @@ const Signup = () => {
         userPassword: formValues.userPassword
       }
       register(registration_information);
-      navigate("/login")
+      navigate("/login_customer")
     }
   }
   const resetForm = () =>{
@@ -79,7 +75,7 @@ const Signup = () => {
   return (
     <div className='loginsignup'>
       <div className="loginsignup-container">
-        <h1>Sign Up</h1>
+        <h1>Sign Up as Customers</h1>
         <div className="loginsignup-fields">
           <input type="text" value={formValues.userName} onChange={(event) => handleChange('userName', event)} placeholder='Your Name' />
           <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
@@ -90,12 +86,9 @@ const Signup = () => {
         </div>
         <button onClick={continueSignin}>Continue</button>
         {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-        <p className="loginsignup-login">Already have an account? <span><Link to={"/login"} onClick= {resetForm}>Login here</Link></span></p>
+        <p className="loginsignup-login">Already have an account? <span><Link to={"/login_customer"} onClick= {resetForm}>Login here</Link></span></p>
         <div className="loginsignup-agree">
-          <input type="checkbox" 
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          name='' id='' />
+          <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} name='' id='' />
           <p>By continuing, i agree to the terms of use & privacy policy.</p>
           {!inputCorrectnessCheck.isCheckedCorrectness && <p style={{ color: 'red' }}>Please agree our privacy policy to continue</p>}
         </div>

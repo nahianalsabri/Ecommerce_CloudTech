@@ -5,6 +5,8 @@ let registration_information = [{
     userPassword: "qwe"
 }]
 
+let registration_information_seller = []
+
 let template_email_address = ""
 
 let OTP = ""
@@ -61,12 +63,7 @@ export function generateOTP(){
 }
 
 export function checkOTP(code){
-    if (code === OTP){
-        resetOTP()
-        return true
-    }else{
-        return false
-    }
+    return (code === OTP);
 }
 
 export function resetOTP(){

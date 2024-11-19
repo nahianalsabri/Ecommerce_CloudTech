@@ -6,10 +6,12 @@ import Shop from './Pages/Shop';
 import ShopCategory from './Pages/ShopCategory';
 import Product from './Pages/Product';
 import Cart from './Pages/Cart';
-import Login from './Pages/Login';
-import Signup from './Pages/Signup';
-import Forgetpassword from './Pages/Forgetpassword';
-import Resetpassword from './Pages/Resetpassword';
+import Login from './Pages/LoginSignup/Login';
+import Signup from './Pages/LoginSignup/Signup';
+import LoginSeller from './Pages/LoginSignup/LoginSeller';
+import SignupSeller from './Pages/LoginSignup/SignupSeller';
+import Forgetpassword from './Pages/LoginSignup/Forgetpassword';
+import Resetpassword from './Pages/LoginSignup/Resetpassword';
 import Footer from './Components/Footer/Footer';
 import men_banner from './Components/Assets/banner_mens.png'
 import women_banner from './Components/Assets/banner_women.png'
@@ -29,10 +31,16 @@ function App() {
           <Route path=':productId' element={<Product/>}/>
         </Route>
         <Route path='/cart' element={<Cart/>}/>
-        <Route path='/signup' element={<Signup/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/forgetPWD' element={<Forgetpassword/>}/>
-        <Route path='/resetPWD' element={<Resetpassword/>}/>
+        <Route path='/signup_customer' element={<Signup/>}/>
+        <Route path='/login_customer' element={<Login/>}/>
+        <Route path='/signup_seller' element={<SignupSeller/>}/>
+        <Route path='/login_seller' element={<LoginSeller/>}/>
+        <Route path='/forgetPWD' element={<Forgetpassword/>}>
+          <Route path=':role' element={<Forgetpassword/>}/>
+        </Route>
+        <Route path='/resetPWD' element={<Resetpassword/>}>
+          <Route path=':role' element={<Resetpassword/>}/>
+        </Route>
       </Routes>
       <Footer/>
       </BrowserRouter>

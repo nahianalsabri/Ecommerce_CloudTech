@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import './CSS/LoginSignup.css'
+import '../CSS/LoginSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {loginCheck} from '../Components/Registration/registration'
+import {loginCheck} from '../../Components/Registration/registration'
 
 const Login = () => {
     const navigate = useNavigate();
@@ -58,7 +58,7 @@ const Login = () => {
     return (
         <div className='loginsignup'>
           <div className="loginsignup-container">
-            <h1>Log In</h1>
+            <h1>Log In as Customers</h1>
             <div className="loginsignup-fields">
               <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
               {!inputCorrectnessCheck.isValidEmail && <p style={{ color: 'red' }}>Please type a valid email address</p>}
@@ -67,8 +67,8 @@ const Login = () => {
             </div>
             <button onClick={continueLogin}>Login</button>
             {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-            <p className="loginsignup-login"><span><Link to={"/signup"} onClick= {resetForm}>Create new account here</Link></span></p>
-            <p className="loginsignup-login"><span><Link to={"/forgetPWD"}>Forget Password?</Link></span></p>
+            <p className="loginsignup-login"><span><Link to={"/signup_customer"} onClick= {resetForm}>Create new account here</Link></span></p>
+            <p className="loginsignup-login"><span><Link to={"/forgetPWD/customer"}>Forget Password?</Link></span></p>
           </div>
         </div>
     )
