@@ -43,12 +43,12 @@
     border-radius: 10px;
     background: #FF4141;
 }
+
 .nav-login-cart{
     display: flex;
     align-items: center;
     gap: 30px;
 }
-
 .nav-login-cart button{
     width: 130px;
     height: 45px;
@@ -67,6 +67,48 @@
 .nav-login-cart img{
     width: 35px;
 }
+
+.nav-login-menu {
+    align-items: center;
+    padding-left: 200px;
+    position: 'relative';
+    display: 'inline-block' 
+}
+.nav-login-menu-button{
+    width: 200px;
+    height: 45px;
+    outline: none;
+    border: 1px solid #7a7a7a;
+    border-radius: 75px;
+    color: #515151;
+    font-size: 20px;
+    font-weight: 500;
+    background: #fce3fe;
+    cursor: pointer;
+}
+.nav-login-menu-sub{
+    position: absolute;
+    z-index: 1000;
+    /* background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+.nav-login-item{
+    padding: 10px 20px;
+    width: 200px;
+    height: 45px;
+    outline: none;
+    background: #fce3fe;
+    border: 1px solid #7a7a7a;
+    border-radius: 75px;
+    color: #515151;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 .nav-cart-count{
     width: 18px;
     height: 18px;

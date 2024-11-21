@@ -5,8 +5,8 @@
     padding-top: 100px;
 }
 .loginsignupseller-container{
-    display: flex;
-    justify-content: space-between;
+    /* display: flex; */
+    /* justify-content: space-between; */
     width: 90%;
     max-width: 1210px;
     background: white;

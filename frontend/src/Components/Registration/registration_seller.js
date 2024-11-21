@@ -9,11 +9,7 @@ export function register_seller(information){
     let temp = {
         userName: information.userName,
         userEmailAddress: information.userEmailAddress,
-        userPassword: information.userPassword,
-        userCompanyName: information.userCompanyName,
-        userProductionName: information.userProductionName,
-        userProductPrice: information.userProductPrice,
-        userProductDescription: information.userProductDescription
+        userPassword: information.userPassword
     }
     registration_information_seller.push(temp)
     console.log(registration_information_seller);
@@ -32,7 +28,6 @@ export function loginCheck_seller(information){
     )
     return check
 }
-
 export function emailCheck_seller(information){
     let check = false;
     registration_information_seller.map((item) => {
@@ -45,7 +40,6 @@ export function emailCheck_seller(information){
     )
     return check
 }
-
 export function resetPWD_seller(information){
     registration_information_seller.map((item) => {
         if(information.userEmailAddress === item.userEmailAddress
@@ -59,7 +53,6 @@ export function generateOTP_seller(){
     // OTP = getOTPfromBackend()
     OTP = "12345"
 }
-
 export function checkOTP_seller(code){
     if (code === OTP){
         return true
@@ -67,7 +60,6 @@ export function checkOTP_seller(code){
         return false
     }
 }
-
 export function resetOTP_seller(){
     OTP = ""
 }
@@ -77,4 +69,27 @@ export function setTemplateAddress_seller(information){
 }
 export function getTemplateAddress_seller(){
     return template_email_address
+}
+
+
+export async function sendDataToBackend(information){
+    // try {
+    //     const response = await fetch('http://localhost:8000', {
+    //         method: 'POST',
+    //         headers: {
+    //         'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(registration_information_seller),
+    //     });
+
+    //     if (!response.ok) {
+    //         throw new Error('Request failed');
+    //     }
+
+    //     const data = await response.json();
+    //     console.log(data);
+    // } catch (error) {
+    //     console.error('Request error:', error.message);
+    // }
+    console.log(information);
 }

@@ -1,23 +1,28 @@
 import React, { useState } from 'react'
 import '../CSS/LoginSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {register} from '../../Components/Registration/registration'
+import {register, generateOTP, checkOTP} from '../../Components/Registration/registration'
 
 const Signup = () => {
+  const [view, setview] = useState("signup");
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [isChecked, setIsChecked] = useState(false);
   const [formValues, setFormValues] = useState({
-    userName: '',
+    userFistName: '',
+    userLastName: '',
+    userMobile: '',
     userEmailAddress: '',
     userPassword: '',
-    userPasswordRewrite: ''
+    userPasswordRewrite: '',
+    userOTP: ''
   });
   const [inputCorrectnessCheck, setInputCorrectness] = useState({
     isValidEmail: true, // Check if email address is correctly written
     passwordConsistency: true, // Check if input password 
     ifAnyEmpty: false, // Check if any empty input exists
-    isCheckedCorrectness: true // Check if checkbox is marked
+    isCheckedCorrectness: true, // Check if checkbox is marked
+    isOTPcorrect: true
   });
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -29,32 +34,47 @@ const Signup = () => {
       });
   }
   const continueSignin = () =>{
-    // Check login information correctness
-    const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
-    const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordRewrite);
-    const setIfAnyEmpty = (formValues.userName.trim() === "" || 
-                        formValues.userEmailAddress.trim() === "" || 
-                        formValues.userPassword.trim() === "" || 
-                        formValues.userPasswordRewrite.trim() === "");
-    const setIsCheckedCorrectness = isChecked;
-    setInputCorrectness({
-      isValidEmail: setIsValidEmail, 
-      passwordConsistency: setPasswordConsistency,
-      ifAnyEmpty: setIfAnyEmpty,
-      isCheckedCorrectness: setIsCheckedCorrectness
-    });
-    // Upload login information
-    //**********//
-    // Transfer to login page
-    if (setIsValidEmail && setPasswordConsistency && !setIfAnyEmpty && setIsCheckedCorrectness){
-      console.log("Successfully registered. Tranfer to login page");
-      const registration_information = {
-        userName: formValues.userName,
-        userEmailAddress: formValues.userEmailAddress,
-        userPassword: formValues.userPassword
+    if (view === "signup"){
+      // Check login information correctness
+      const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
+      const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordRewrite);
+      const setIfAnyEmpty = (formValues.userName.trim() === "" || 
+                          formValues.userEmailAddress.trim() === "" || 
+                          formValues.userPassword.trim() === "" || 
+                          formValues.userPasswordRewrite.trim() === "");
+      const setIsCheckedCorrectness = isChecked;
+      setInputCorrectness({
+        ...inputCorrectnessCheck,
+        isValidEmail: setIsValidEmail, 
+        passwordConsistency: setPasswordConsistency,
+        ifAnyEmpty: setIfAnyEmpty,
+        isCheckedCorrectness: setIsCheckedCorrectness
+      });
+      // Upload login information
+      //**********//
+      // Transfer to login page
+  
+      if (setIsValidEmail && setPasswordConsistency && !setIfAnyEmpty && setIsCheckedCorrectness){
+        console.log("Successfully registered. Tranfer to login page");    
+        register(registration_information);
+        generateOTP();
+        setview("OTP");
       }
-      register(registration_information);
-      navigate("/login_customer")
+    }
+    else if(view === "OTP"){
+      const verify = checkOTP(formValues.userOTP)
+      setInputCorrectness({
+          ...inputCorrectnessCheck,
+          isOTPcorrect: verify
+      })
+      if(verify){
+        const registration_information = {
+          userName: formValues.userName,
+          userEmailAddress: formValues.userEmailAddress,
+          userPassword: formValues.userPassword
+        }
+        navigate("/login_customer")
+      }
     }
   }
   const resetForm = () =>{
@@ -73,6 +93,8 @@ const Signup = () => {
   }
   
   return (
+    <div>
+    {view === 'signup' && (
     <div className='loginsignup'>
       <div className="loginsignup-container">
         <h1>Sign Up as Customers</h1>
@@ -93,6 +115,20 @@ const Signup = () => {
           {!inputCorrectnessCheck.isCheckedCorrectness && <p style={{ color: 'red' }}>Please agree our privacy policy to continue</p>}
         </div>
       </div>
+    </div>
+    )}
+    {view === 'OTP' && (
+    <div className='loginsignup'>
+      <div className="loginsignup-container">
+        <h1>We have send an OTP code to the email address you provide. Please type the OTP code for verifying</h1>
+        <div className="loginsignup-fields">
+          <input type="text" value={formValues.userOTP} onChange={(event) => handleChange('userOTP', event)} placeholder='OTP code' />
+          {!inputCorrectnessCheck.isOTPcorrect && <p style={{ color: 'red' }}>Incorrect OTP code, please check again</p>}
+        </div>
+        <button onClick={continueSignin}>Continue</button>
+      </div>
+    </div>
+    )}
     </div>
   )
 }

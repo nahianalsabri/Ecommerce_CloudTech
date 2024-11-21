@@ -12,6 +12,7 @@ import LoginSeller from './Pages/LoginSignup/LoginSeller';
 import SignupSeller from './Pages/LoginSignup/SignupSeller';
 import Forgetpassword from './Pages/LoginSignup/Forgetpassword';
 import Resetpassword from './Pages/LoginSignup/Resetpassword';
+import AddProduct from './Pages/LoginSignup/AddProduct';
 import Footer from './Components/Footer/Footer';
 import men_banner from './Components/Assets/banner_mens.png'
 import women_banner from './Components/Assets/banner_women.png'
@@ -41,6 +42,7 @@ function App() {
         <Route path='/resetPWD' element={<Resetpassword/>}>
           <Route path=':role' element={<Resetpassword/>}/>
         </Route>
+        <Route path='/AddProduct' element={<AddProduct/>}/>
       </Routes>
       <Footer/>
       </BrowserRouter>

@@ -5,20 +5,17 @@ let registration_information = [{
     userPassword: "qwe"
 }]
 
-let registration_information_seller = []
-
 let template_email_address = ""
 
 let OTP = ""
 
-export function register(information){
-    let temp = {
-        userName: information.userName,
-        userEmailAddress: information.userEmailAddress,
-        userPassword: information.userPassword
+export async function register(information){
+    try{
+        const isRegister= await axios.post(`${baseURL}/user`,information)
+        return isRegister
+    }catch(e){
+        return e
     }
-    registration_information.push(temp)
-    console.log(registration_information);
 }
 
 export function loginCheck(information){
