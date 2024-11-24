@@ -1,0 +1,160 @@
+.ProductInformation{
+    width: 100%;
+    min-height: 150vh;
+    background: #fce3fe;
+    padding-top: 100px;
+    overflow-y: auto;
+}
+    .ProductInformation-container{
+        width: 90%;
+        height: 100%;
+        max-width: 1500px;
+        background: white;
+        margin: auto;
+        padding: 30px 40px;
+        box-sizing: border-box;
+    }
+        .ProductInformation-workzone{
+            display: flex;
+            justify-self: space-between;
+            gap: 20px;
+        }
+            .ProductInformation-informaion{
+                height: 60vh;
+                flex: 5;
+                box-sizing: border-box;
+                padding: 30px;
+                font-size: 28px;
+                overflow:auto;
+            }
+                .ProductTable{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    padding: 10px;
+                    font-size: 18px;
+                }
+                .ProductTable input{
+                    height: 60px;
+                    width: 100%;
+                    padding-left: 20px;
+                    border: 1px solid #c9c9c9;
+                    outline: none;
+                    color: #5c5c5c;
+                    font-size: 18px;
+                    box-sizing: border-box;
+                }
+                .ProductTable textarea{
+                    height: 25vh;
+                    width: 100%;
+                    padding-left: 20px;
+                    color: #5c5c5c;
+                    font-size: 18px;
+                    border: 1px solid #c9c9c9;
+                    outline: none;
+                    overflow: auto;
+                    resize: none;
+                    word-wrap: break-word;
+                    white-space: pre-wrap;
+                    box-sizing: border-box;
+                }
+                    .ProductTags{
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        border: 1px solid #ccc;
+                    }
+                    .ProductTags input{
+                        border: none;
+                    }
+                    .ProductTags button{
+                        margin-left: 8px;
+                        border: none;
+                        background: none;
+                        color: red;
+                        cursor: pointer;
+                    }
+                        .ProductTags-list{
+                            background: #f1f1f1;
+                            border-radius: 15px;
+                            padding: 5px 10px;
+                            margin: 5px;
+                        }
+            .ProductInformation-images{
+                display: flex;
+                flex-direction: column;
+                height: 60vh;
+                flex: 4;
+                box-sizing: border-box;
+                font-size: 28px;
+                padding: 30px;
+                overflow: auto;
+            }
+            .ProductInformation-images button{
+                width: 30%;
+                height: 55px;
+                color: white;
+                background: #ff4141;
+                border: none;
+                font-size: 22px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+                .images{
+                    height: 80%;
+                    margin-top: 20px;
+                    padding: 10px;
+                    border: 1px solid #c9c9c9;
+                    font-size: 14px;
+                    overflow-y: auto;
+                }
+                .images-display{
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    justify-content: left; 
+                }
+                .images-item{
+                    position: relative;
+                    width: 40%;
+                    height: 40%;
+                    overflow: hidden;
+                }
+                .images-item img{
+                    width: 100%;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                }
+                .images-item button{
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    background-color: red;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                }
+.ProductInformation-add{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ProductInformation-add button{
+    width: 40%;
+    height: 50px;
+    margin-top: 30px;
+    margin-inline: auto;
+    color: white;
+    background: #ff4141;
+    border: none;
+    font-size: 22px;
+    font-weight: 500;
+    cursor: pointer;
+}

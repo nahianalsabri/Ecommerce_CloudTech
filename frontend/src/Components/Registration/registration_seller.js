@@ -72,7 +72,7 @@ export function getTemplateAddress_seller(){
 }
 
 
-export async function sendDataToBackend(information){
+export async function submitProduct(information){
     // try {
     //     const response = await fetch('http://localhost:8000', {
     //         method: 'POST',

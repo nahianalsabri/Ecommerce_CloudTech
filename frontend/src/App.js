@@ -13,7 +13,9 @@ import SignupSeller from './Pages/LoginSignup/SignupSeller';
 import Forgetpassword from './Pages/LoginSignup/Forgetpassword';
 import Resetpassword from './Pages/LoginSignup/Resetpassword';
 import AddProduct from './Pages/LoginSignup/AddProduct';
+import ProductInformation from './Pages/LoginSignup/ProductInformation';
 import Footer from './Components/Footer/Footer';
+import Test from './Pages/test'
 import men_banner from './Components/Assets/banner_mens.png'
 import women_banner from './Components/Assets/banner_women.png'
 import kid_banner from './Components/Assets/banner_kids.png'
@@ -43,6 +45,8 @@ function App() {
           <Route path=':role' element={<Resetpassword/>}/>
         </Route>
         <Route path='/AddProduct' element={<AddProduct/>}/>
+        <Route path='/ProductInformation' element={<ProductInformation/>}/>
+        <Route path='/test' element={<Test/>}/>
       </Routes>
       <Footer/>
       </BrowserRouter>
