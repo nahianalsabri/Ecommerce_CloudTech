@@ -12,8 +12,9 @@ import LoginSeller from './Pages/LoginSignup/LoginSeller';
 import SignupSeller from './Pages/LoginSignup/SignupSeller';
 import Forgetpassword from './Pages/LoginSignup/Forgetpassword';
 import Resetpassword from './Pages/LoginSignup/Resetpassword';
-import AddProduct from './Pages/LoginSignup/AddProduct';
-import ProductInformation from './Pages/LoginSignup/ProductInformation';
+import AddProduct from './Pages/CustomerSeller/AddProduct';
+import ProductInformation from './Pages/CustomerSeller/ProductInformation';
+import OrderManagement from './Pages/CustomerSeller/OrderManagement';
 import Footer from './Components/Footer/Footer';
 import Test from './Pages/test'
 import men_banner from './Components/Assets/banner_mens.png'
@@ -34,8 +35,8 @@ function App() {
           <Route path=':productId' element={<Product/>}/>
         </Route>
         <Route path='/cart' element={<Cart/>}/>
-        <Route path='/signup_customer' element={<Signup/>}/>
-        <Route path='/login_customer' element={<Login/>}/>
+        <Route path='/signup_user' element={<Signup/>}/>
+        <Route path='/login_user' element={<Login/>}/>
         <Route path='/signup_seller' element={<SignupSeller/>}/>
         <Route path='/login_seller' element={<LoginSeller/>}/>
         <Route path='/forgetPWD' element={<Forgetpassword/>}>
@@ -46,6 +47,7 @@ function App() {
         </Route>
         <Route path='/AddProduct' element={<AddProduct/>}/>
         <Route path='/ProductInformation' element={<ProductInformation/>}/>
+        <Route path='/OrderManagement' element={<OrderManagement/>}/>
         <Route path='/test' element={<Test/>}/>
       </Routes>
       <Footer/>

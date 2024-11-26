@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginCheck } from "../../Components/Registration/registration";
+import { postInformationToBackend } from "../../Components/Registration/registration";
+import { setUser, getUser } from "../../Components/Registration/user";
 import "../CSS/LoginSignup.css";
 
 const Login = () => {
@@ -30,9 +31,9 @@ const Login = () => {
     };
     const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
     const setIfAnyEmpty =
-      formValues.userEmailAddress.trim() === "" ||
-      formValues.userPassword.trim() === "";
-    const setIsCheckedCorrectness = await loginCheck(login_information);
+      (formValues.userEmailAddress.trim() === "" ||
+      formValues.userPassword.trim() === "");
+    const setIsCheckedCorrectness = await postInformationToBackend("login", "user", login_information);
     console.log("llllllll", !setIsCheckedCorrectness?.status);
 
     if (!setIsCheckedCorrectness?.status) {
@@ -43,8 +44,16 @@ const Login = () => {
         isCheckedCorrectness: setIsCheckedCorrectness,
       });
     } else {
-      console.log("successfully login!");
-      navigate("/");
+      if(getUser().userLogin){
+        alert("You must log out before log into new account")
+      }else{
+        console.log("successfully login!");
+        setUser({
+          userName: "User",
+          userRole: "Customer",
+        })
+        navigate("/");
+      }
     }
   };
   const resetForm = () => {
@@ -92,14 +101,14 @@ const Login = () => {
         )}
         <p className="loginsignup-login">
           <span>
-            <Link to={"/signup_customer"} onClick={resetForm}>
+            <Link to={"/signup_user"} onClick={resetForm}>
               Create new account here
             </Link>
           </span>
         </p>
         <p className="loginsignup-login">
           <span>
-            <Link to={"/forgetPWD/customer"}>Forget Password?</Link>
+            <Link to={"/forgetPWD/user"}>Forget Password?</Link>
           </span>
         </p>
       </div>

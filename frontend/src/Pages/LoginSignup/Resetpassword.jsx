@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import '../CSS/LoginSignup.css'
-import { resetPWD, getTemplateAddress, checkOTP, resetOTP } from '../../Components/Registration/registration'
-import { resetPWD_seller, getTemplateAddress_seller, checkOTP_seller, resetOTP_seller } from '../../Components/Registration/registration_seller'
+import { postInformationToBackend, getInformationToBackend } from '../../Components/Registration/registration'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Resetpassword = () => {
@@ -9,7 +8,10 @@ const Resetpassword = () => {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         OTPcode: '',
-        userEmailAddress: (role === "customer") ? getTemplateAddress() : getTemplateAddress_seller(),
+        userEmailAddress: async() => {
+            const output = await getInformationToBackend("forgetPWD", role);
+            return output?.data.email;
+        }, // Here might be an error, I try to write a GET function to get users email address from backend 
         userPassword: '',
         userPasswordReapt: ''
     });
@@ -25,8 +27,14 @@ const Resetpassword = () => {
             });
     }
 
-    const continueLogin = () => {
-        const setIsValidOTP = (role === "customer") ? checkOTP(formValues.OTPcode) : checkOTP_seller(formValues.OTPcode); // WE get OTP from backend API, currently set true
+    const continueLogin = async() => {
+        const registration_information = {
+            email: formValues.userEmailAddress,
+            otp: formValues.OTPcode,
+            newPassword: formValues.userPassword,
+        }
+        const setIsValidOTP = await postInformationToBackend("resetPWD", role, registration_information)
+        // const setIsValidOTP = (role === "customer") ? checkOTP(formValues.OTPcode) : checkOTP_seller(formValues.OTPcode); // WE get OTP from backend API, currently set true
         const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordReapt);
         const setIfAnyEmpty = (formValues.OTPcode.trim() === "" ||  
                             formValues.userPassword.trim() === "" || 
@@ -37,18 +45,12 @@ const Resetpassword = () => {
             ifAnyEmpty: setIfAnyEmpty
         });
         if(setIsValidOTP && !setIfAnyEmpty && setPasswordConsistency){
-            const registration_information = {
-                userEmailAddress: formValues.userEmailAddress,
-                userPassword: formValues.userPassword
-            }
-            if (role === "cutomer"){            
-                resetOTP()
-                resetPWD(registration_information);
-            }
-            else if(role === "seller"){
-                resetOTP_seller()
-                resetPWD_seller(registration_information);
-            }
+            // if (role === "cutomer"){
+            //     resetPWD(registration_information);
+            // }
+            // else if(role === "seller"){
+            //     resetPWD_seller(registration_information);
+            // }
             navigate(`/login_${role}`);
         }
     }
@@ -56,7 +58,7 @@ const Resetpassword = () => {
         <div className='loginsignup'>
             <div className="loginsignup-container">
                 <div className="loginsignup-fields">
-                    <p className="loginsignup-login"><span><Link to={"/login"} onClick={resetOTP}>{"<-"} back</Link></span></p>
+                    <p className="loginsignup-login"><span><Link to={`/login_${role}`}>{"<-"} back</Link></span></p>
                     <p>Please type OTP code you receive from your email address</p>
                     <input type="text" value={formValues.OTPcode} onChange={(event) => handleChange("OTPcode", event)} placeholder='OTP code' />
                     {!inputCorrectnessCheck.isValidOTP && <p style={{ color: 'red' }}>Invalid OTP, please check again</p>}

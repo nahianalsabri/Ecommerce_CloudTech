@@ -5,6 +5,7 @@ import cart_icon from '../Assets/cart_icon.png'
 import nav_dropdown from '../Assets/nav_dropdown.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
+import { getUser, logout } from '../Registration/user'
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -51,14 +52,39 @@ const Navbar = () => {
         <li onClick={()=>{setMenu("kids")}}><Link to='/kids'>Kids</Link>{menu==="kids"?<hr/>:<></>}</li>
       </ul>
       <div ref={dropdownRef} className="nav-login-menu">
-          <button onClick={toggleMenu} className='nav-login-menu-button'>LogIn & SignUp</button>
-          {isMenuOpen && (
+          {!getUser().userLogin && 
+            (<button onClick={toggleMenu} className='nav-login-menu-button'>LogIn & SignUp</button>
+          )}
+          {getUser().userLogin && 
+            (<button onClick={toggleMenu} className='nav-login-menu-button'>{getUser().userName}</button>
+          )}
+          {(isMenuOpen && !getUser().userLogin) && (
             <div className="nav-login-menu-sub">
-              <button onClick={() => handleButtonClick('/login_customer')} className='nav-login-item'>
+              <button onClick={() => handleButtonClick('/login_user')} className='nav-login-item'>
                 Customers
               </button>
               <button onClick={() => handleButtonClick('/login_seller')} className='nav-login-item'>
                 Sellers
+              </button>
+            </div>
+          )}
+          {(isMenuOpen && getUser().userLogin && getUser().userRole === "Customer") && (
+            <div className="nav-login-menu-sub">
+              <button onClick={() => handleButtonClick('/OrderManagement')} className='nav-login-item'>
+                Order Management
+              </button>
+              <button onClick={() => logout()} className='nav-login-item'>
+                Log Out
+              </button>
+            </div>
+          )}
+          {(isMenuOpen && getUser().userLogin && getUser().userRole === "Seller") && (
+            <div className="nav-login-menu-sub">
+              <button onClick={() => handleButtonClick('/AddProduct')} className='nav-login-item'>
+                Dashboard
+              </button>
+              <button onClick={() => logout()} className='nav-login-item'>
+                Log Out
               </button>
             </div>
           )}

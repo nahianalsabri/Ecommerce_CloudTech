@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import '../CSS/ProductInformation.css'
 import { useNavigate } from 'react-router-dom'
-import { submitProduct } from '../../Components/Registration/registration_seller'
+import { postInformationToBackend } from '../../Components/Registration/registration'
 
 const AddProduct = () => {
     const [ProductTagsList, setTagList] = useState([]);
@@ -60,7 +60,7 @@ const AddProduct = () => {
     const removeImage = (index) => {
         setImageList((prevImages) => prevImages.filter((_, i) => i !== index));
     };
-    const Continue = () => {
+    const Continue = async() => {
         const setIfAnyEmpty = (formValues.ProductName.trim() === "" ||
                         formValues.ProductCategory.trim() === "" ||
                         formValues.ProductPrice.trim() === "" ||
@@ -76,11 +76,13 @@ const AddProduct = () => {
                 productPics: imageList,
                 name: formValues.ProductName,
                 price: formValues.ProductName,
-                tags: formValues.ProductTags,
+                tags: ProductTagsList,
                 category: formValues.category
             };
-            submitProduct(product_information);
-            navigate("/AddProduct");
+            const ifValid = await postInformationToBackend("submitProduct", "seller", product_information);
+            if(ifValid){
+                navigate("/AddProduct");
+            }
         }
     };
 

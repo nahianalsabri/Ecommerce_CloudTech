@@ -69,7 +69,7 @@
             padding: 30px;
             overflow: auto;
         }
-            /* .ProductTable{
+            .ProductTable{
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
@@ -110,7 +110,7 @@
                 font-size: 22px;
                 font-weight: 500;
                 cursor: pointer;
-            } */
+            }
     .Continue{
         display: flex;
         justify-self: center;

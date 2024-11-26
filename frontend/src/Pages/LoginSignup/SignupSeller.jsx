@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../CSS/LoginSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {register_seller, generateOTP_seller, checkOTP_seller, sendDataToBackend} from '../../Components/Registration/registration_seller'
+import {postInformationToBackend} from '../../Components/Registration/registration'
 
 const SignupSeller = () => {
     const [view, setview] = useState("signup");
@@ -9,35 +9,37 @@ const SignupSeller = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const [isChecked, setIsChecked] = useState(false);
     const [formValues, setFormValues] = useState({
-        userName: '',
+        userFirstName: "",
+        userLastName: "",
         userEmailAddress: '',
         userPassword: '',
         userPasswordRewrite: '',
         userOTP: ''
     });
     const [inputCorrectnessCheck, setInputCorrectness] = useState({
-      isValidEmail: true, // Check if email address is correctly written
-      passwordConsistency: true, // Check if input password 
-      ifAnyEmpty: false, // Check if any empty input exists
-      isCheckedCorrectness: true, // Check if checkbox is marked
-      isOTPcorrect: true // Check if OTP code is correctly typed
+        isValidEmail: true, // Check if email address is correctly written
+        passwordConsistency: true, // Check if input password 
+        ifAnyEmpty: false, // Check if any empty input exists
+        isCheckedCorrectness: true, // Check if checkbox is marked
+        isOTPcorrect: true // Check if OTP code is correctly typed
     });
     const [ifApproved, setIfApproved] = useState(false)
     const handleCheckboxChange = (event) => {
-      setIsChecked(event.target.checked);
+        setIsChecked(event.target.checked);
     };
     const handleChange = (name, event) => {
         const value = event.target.value;
         setFormValues(previousState => {
-          return { ...previousState, [name]: value }
+            return { ...previousState, [name]: value }
         });
     }
-    const continueSignin = () =>{
+    const continueSignin = async() =>{
         if(view === "signup"){
             // Check login information correctness
             const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
             const setPasswordConsistency = (formValues.userPassword === formValues.userPasswordRewrite);
-            const setIfAnyEmpty = (formValues.userName.trim() === "" || 
+            const setIfAnyEmpty = (formValues.userFirstName.trim() === "" || 
+                                formValues.userLastName.trim() === "" || 
                                 formValues.userEmailAddress.trim() === "" || 
                                 formValues.userPassword.trim() === "" || 
                                 formValues.userPasswordRewrite.trim() === "");
@@ -49,31 +51,35 @@ const SignupSeller = () => {
                 ifAnyEmpty: setIfAnyEmpty,
                 isCheckedCorrectness: setIsCheckedCorrectness
             });
-            // Upload login information
-            //**********//
             // Transfer to login page
-            if (setIsValidEmail && setPasswordConsistency && !setIfAnyEmpty && setIsCheckedCorrectness){
-                generateOTP_seller();
-                setview("OTP");
+            if (setIsValidEmail && setPasswordConsistency && !setIfAnyEmpty && setIsCheckedCorrectness){           
+                const registration_information = {
+                  firstName: formValues.userFirstName,
+                  lastName: formValues.userLastName,
+                  email: formValues.userEmailAddress,
+                  password: formValues.userPassword,
+                }
+                const isRegisterd = await postInformationToBackend("register", "seller", registration_information);
+
+                if (isRegisterd) {
+                  setview("OTP");
+                }
             }
         }
         else if(view === "OTP"){
-            console.log(inputCorrectnessCheck.isOTPcorrect)
-            const verify = checkOTP_seller(formValues.userOTP)
+            const data = {
+                email: formValues.userEmailAddress,
+                otp: formValues.userOTP,
+              };
+            const isVarifide = await postInformationToBackend("email_verify", "seller", data);   
             setInputCorrectness({
-                ...inputCorrectnessCheck,
-                isOTPcorrect: verify
-            })
-            if(verify){
-                const registration_information = {
-                    userName: formValues.userName,
-                    userEmailAddress: formValues.userEmailAddress,
-                    userPassword: formValues.userPassword
-                }
-                register_seller(registration_information);
-                
-                //sendDataToBackend(registration_information);
-                
+              ...inputCorrectnessCheck,
+              isOTPcorrect: isVarifide,
+            });
+            
+            console.log(isVarifide);
+             
+            if (isVarifide) { 
                 {
                     let remainingTime = 5;
                     const interval = setInterval(() => {
@@ -87,28 +93,9 @@ const SignupSeller = () => {
                         }
                     }, 1000);
                 }
-
-                resetForm();
                 setview("waiting");
-                // 
-            }
+            }   
         }
-    }
-    const resetForm = () =>{
-      setFormValues({
-        userName: '',
-        userEmailAddress: '',
-        userPassword: '',
-        userPasswordRewrite: '',
-        userOTP: ''
-      });
-      setInputCorrectness({
-        ...inputCorrectnessCheck,
-        isValidEmail: true,
-        passwordConsistency: true,
-        ifAnyEmpty: false,
-        isCheckedCorrectness: true
-      });
     }
 
     return (
@@ -118,7 +105,8 @@ const SignupSeller = () => {
         <div className="loginsignup-container">
           <h1>Sign Up as Seller</h1>
           <div className="loginsignup-fields">
-            <input type="text" value={formValues.userName} onChange={(event) => handleChange('userName', event)} placeholder='Your Name' />
+            <input type="text" value={formValues.userFirstName} onChange={(event) => handleChange('userFirstName', event)} placeholder='Your First Name' />
+            <input type="text" value={formValues.userLastName} onChange={(event) => handleChange('userLastName', event)} placeholder='Your Last Name' />
             <input type="email" value={formValues.userEmailAddress} onChange={(event) => handleChange('userEmailAddress', event)} placeholder='Email Address' />
             {!inputCorrectnessCheck.isValidEmail && <p style={{ color: 'red' }}>Please type a valid email address</p>}
             <input type="password" value={formValues.userPassword} onChange={(event) => handleChange('userPassword', event)} placeholder='Password' />
@@ -127,7 +115,7 @@ const SignupSeller = () => {
           </div>
           <button onClick={continueSignin}>Continue</button>
           {inputCorrectnessCheck.ifAnyEmpty && <p style={{ color: 'red' }}>The input cannot be empty</p>}
-          <p className="loginsignup-login">Already have an account? <span><Link to={"/login_seller"} onClick= {resetForm}>Login here</Link></span></p>
+          <p className="loginsignup-login">Already have an account? <span><Link to={"/login_seller"}>Login here</Link></span></p>
           <div className="loginsignup-agree">
             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} name='' id='' />
             <p>By continuing, i agree to the terms of use & privacy policy.</p>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {checkOTP, emailVarified, register} from "../../Components/Registration/registration";
+import { postInformationToBackend } from "../../Components/Registration/registration";
 import "../CSS/LoginSignup.css";
 
 const Signup = () => {
@@ -62,44 +62,31 @@ const Signup = () => {
           email: formValues.userEmailAddress,
           password: formValues.userPassword,
         };
-        const isRegisterd = await register(registration_information);
+        const isRegisterd = await postInformationToBackend("register", "user", registration_information);
 
         if (isRegisterd) {
           setview("OTP");
         }
       }
     } else if (view === "OTP") {
-      const verify = checkOTP(formValues.userOTP);
-
-      const isVarifide = await emailVarified(
-        formValues?.userEmailAddress,
-        formValues.userOTP
-      );
-      if (!isVarifide) {
-        setInputCorrectness({
-          ...inputCorrectnessCheck,
-          isOTPcorrect: verify,
-        });
-      }
+      const data = {
+        email: formValues.userEmailAddress,
+        otp: formValues.userOTP,
+      };
+      const isVarifide = await postInformationToBackend("email_verify", "user", data);
+      setInputCorrectness({
+        ...inputCorrectnessCheck,
+        isOTPcorrect: isVarifide,
+      });
+      
       console.log(isVarifide);
 
-      navigate("/login_customer");
+      if (isVarifide) {
+        navigate("/login_user");
+      }
     }
   };
-  const resetForm = () => {
-    setFormValues({
-      userName: "",
-      userEmailAddress: "",
-      userPassword: "",
-      userPasswordRewrite: "",
-    });
-    setInputCorrectness({
-      isValidEmail: true,
-      passwordConsistency: true,
-      ifAnyEmpty: false,
-      isCheckedCorrectness: true,
-    });
-  };
+
 
   return (
     <div>
@@ -156,7 +143,7 @@ const Signup = () => {
             <p className="loginsignup-login">
               Already have an account?{" "}
               <span>
-                <Link to={"/login_customer"} onClick={resetForm}>
+                <Link to={"/login_user"}>
                   Login here
                 </Link>
               </span>

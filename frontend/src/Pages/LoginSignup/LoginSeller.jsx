@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import '../CSS/LoginSignup.css'
-import { Link, useNavigate } from 'react-router-dom'
-import {loginCheck_seller} from '../../Components/Registration/registration_seller'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { postInformationToBackend } from '../../Components/Registration/registration';
+import { setUser, getUser } from "../../Components/Registration/user";
+import '../CSS/LoginSignup.css';
 
 const LoginSeller = () => {
     const navigate = useNavigate();
@@ -23,15 +24,18 @@ const LoginSeller = () => {
         });
     }
 
-    const continueLogin = () =>{
+    const continueLogin = async() =>{
         const login_information = {
-          userEmailAddress: formValues.userEmailAddress,
-          userPassword: formValues.userPassword
-        }
+          email: formValues.userEmailAddress,
+          password: formValues.userPassword,
+        };
         const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
         const setIfAnyEmpty = (formValues.userEmailAddress.trim() === "" || 
                             formValues.userPassword.trim() === "");
-        const setIsCheckedCorrectness = loginCheck_seller(login_information);
+        // const setIsCheckedCorrectness = loginCheck_seller(login_information);
+        const setIsCheckedCorrectness = await postInformationToBackend("login", "seller", login_information);
+        console.log("llllllll", !setIsCheckedCorrectness?.status);
+
         setInputCorrectness({
           ...formValues,
           isValidEmail: setIsValidEmail,
@@ -39,8 +43,16 @@ const LoginSeller = () => {
           isCheckedCorrectness: setIsCheckedCorrectness
         })
         if(setIsValidEmail && !setIfAnyEmpty && setIsCheckedCorrectness){
-          console.log("successfully login!");
-          navigate("/");
+          if(getUser().userLogin){
+            alert("You must log out before log into new account")
+          }else{
+            console.log("successfully login!");
+            setUser({
+              userName: "User",
+              userRole: "Seller",
+            })
+            navigate("/");
+          }
         }
     }
     const resetForm = () =>{

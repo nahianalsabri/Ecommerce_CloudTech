@@ -1,10 +1,40 @@
 import React, { useContext } from 'react'
-import './CartItems.css'
+import { useNavigate } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
+import { getUser, orderCheckOut} from '../Registration/user'
 import remove_icon from '../Assets/cart_cross_icon.png'
+import './CartItems.css'
 
 const CartItems = () => {
-    const {getTotalCartAmount,all_product,cartItems,removeFromCart} = useContext(ShopContext);
+  const navigate = useNavigate();
+  const {getTotalCartAmount,all_product,cartItems,removeFromCart} = useContext(ShopContext);
+  
+  const checkOut = () =>{
+    // if (getUser().userRole){
+
+    // }else{
+    //   alert("Please log into account before checkout");
+    // }
+    let orderList = []
+    all_product.map((e)=>{
+      if(cartItems[e.id]>0){
+        const order = {
+          name: e.name,
+          price: e.new_price,
+          quantity: cartItems[e.id],
+          total_price: e.new_price*cartItems[e.id],
+          image: e.image,
+        };
+        orderList.push(order);
+        while(cartItems[e.id]>0){
+          removeFromCart(e.id);
+          cartItems[e.id] -= 1;
+        }
+      }
+    });
+    orderCheckOut(orderList);
+    navigate('/');
+  }
   return (
     <div className='cartitems'>
       <div className="cartitems-format-main">
@@ -52,7 +82,7 @@ const CartItems = () => {
                     <h3>${getTotalCartAmount()}</h3>
                 </div>
             </div>
-            <button>PROCEED TO CHECKOUT</button>
+            <button onClick={checkOut}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cartitems-promocode">
             <p>If you have a promo code, Enter it here</p>
