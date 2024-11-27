@@ -10,12 +10,13 @@ import { getUser, logout } from '../Registration/user'
 const Navbar = () => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [search, setSearch] = useState("")
     const dropdownRef = useRef();
     const toggleMenu = () => {
       setIsMenuOpen((prev) => !prev);
     };
     const handleButtonClick = (param) => {
-      setIsMenuOpen(false)
+      setIsMenuOpen(false);
       navigate(param);
     };
     const handleOutsideClick = (event) => {
@@ -23,6 +24,10 @@ const Navbar = () => {
         setIsMenuOpen(false);
       }
     };
+    const handleChange = (event) => {
+      const value = event.target.value;
+      setSearch(value);
+    }
     useEffect(() => {
       document.addEventListener('mousedown', handleOutsideClick);
       return () => {
@@ -38,6 +43,11 @@ const Navbar = () => {
       menuRef.current.classList.toggle('nav-menu-visible');
       e.target.classList.toggle('open');
     }
+    const LogOut = () => {
+      logout();
+      navigate("/"); 
+      setIsMenuOpen(false);
+    }
   return (
     <div className='navbar'>
       <Link to='/' onClick={()=>{setMenu("shop")}} className="nav-logo">
@@ -45,12 +55,27 @@ const Navbar = () => {
         <p>Cloud Tech Student Store </p>
       </Link>
       <img onClick={dropdown_toggle} className='nav-dropdown' src={nav_dropdown} alt="" />
-      <ul ref={menuRef} className="nav-menu">
-        <li onClick={()=>{setMenu("shop")}}><Link to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("mens")}}><Link to='/mens'>Men</Link>{menu==="mens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("womens")}}><Link to="womens">Women</Link>{menu==="womens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("kids")}}><Link to='/kids'>Kids</Link>{menu==="kids"?<hr/>:<></>}</li>
-      </ul>
+      {(!getUser().userLogin || 
+      (getUser().userLogin && getUser().userRole === "Customer")) && (
+        <ul ref={menuRef} className="nav-menu">
+          <li onClick={()=>{setMenu("shop")}}><Link to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>
+          <li onClick={()=>{setMenu("mens")}}><Link to='/mens'>Men</Link>{menu==="mens"?<hr/>:<></>}</li>
+          <li onClick={()=>{setMenu("womens")}}><Link to="womens">Women</Link>{menu==="womens"?<hr/>:<></>}</li>
+          <li onClick={()=>{setMenu("kids")}}><Link to='/kids'>Kids</Link>{menu==="kids"?<hr/>:<></>}</li>
+        </ul>
+      )}
+      {(getUser().userLogin && getUser().userRole === "Customer") && (
+        <div className='nav-search'>
+            <input type="text" value={search} onChange={(event) => handleChange(event)} placeholder='Search Here'/>
+            <button>Search</button>
+        </div>
+      )}
+      {(getUser().userLogin && getUser().userRole === "Customer") && (
+        <div className="nav-login-cart">
+          <Link to='/cart'><img src={cart_icon} alt="" /></Link>
+          <div className="nav-cart-count">{getTotalCartItems()}</div>
+        </div>
+      )}
       <div ref={dropdownRef} className="nav-login-menu">
           {!getUser().userLogin && 
             (<button onClick={toggleMenu} className='nav-login-menu-button'>LogIn & SignUp</button>
@@ -73,7 +98,7 @@ const Navbar = () => {
               <button onClick={() => handleButtonClick('/OrderManagement')} className='nav-login-item'>
                 Order Management
               </button>
-              <button onClick={() => logout()} className='nav-login-item'>
+              <button onClick={() => {LogOut()}} className='nav-login-item'>
                 Log Out
               </button>
             </div>
@@ -83,15 +108,11 @@ const Navbar = () => {
               <button onClick={() => handleButtonClick('/AddProduct')} className='nav-login-item'>
                 Dashboard
               </button>
-              <button onClick={() => logout()} className='nav-login-item'>
+              <button onClick={() => {LogOut()}} className='nav-login-item'>
                 Log Out
               </button>
             </div>
           )}
-      </div>
-      <div className="nav-login-cart">
-        <Link to='/cart'><img src={cart_icon} alt="" /></Link>
-        <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
     </div>
   )

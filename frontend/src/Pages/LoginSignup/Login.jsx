@@ -35,15 +35,13 @@ const Login = () => {
       formValues.userPassword.trim() === "");
     const setIsCheckedCorrectness = await postInformationToBackend("login", "user", login_information);
     console.log("llllllll", !setIsCheckedCorrectness?.status);
-
-    if (!setIsCheckedCorrectness?.status) {
-      setInputCorrectness({
-        ...formValues,
-        isValidEmail: setIsValidEmail,
-        ifAnyEmpty: setIfAnyEmpty,
-        isCheckedCorrectness: setIsCheckedCorrectness,
-      });
-    } else {
+    setInputCorrectness({
+      ...formValues,
+      isValidEmail: setIsValidEmail,
+      ifAnyEmpty: setIfAnyEmpty,
+      isCheckedCorrectness: setIsCheckedCorrectness,
+    });
+    if (setIsValidEmail && !setIfAnyEmpty && setIsCheckedCorrectness) {
       if(getUser().userLogin){
         alert("You must log out before log into new account")
       }else{

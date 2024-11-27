@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import '../CSS/ProductInformation.css'
 import { useNavigate } from 'react-router-dom'
 import { postInformationToBackend } from '../../Components/Registration/registration'
+import DescriptionBox from '../../Components/DescriptionBox/DescriptionBox'
 
 const AddProduct = () => {
     const [ProductTagsList, setTagList] = useState([]);
@@ -9,6 +10,7 @@ const AddProduct = () => {
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
     const maximumTags = 10;
+    const numberRegex = /^\d*\.?\d*$/;
     const [formValues, setFormValues] = useState({
         ProductName: '',
         ProductTags: '',
@@ -19,18 +21,19 @@ const AddProduct = () => {
     });
     const [inputCorrectnessCheck, setInputCorrectness] = useState({
         ifAnyEmpty: false, // Check if any empty input exists
+        ifNumber: true,
         ifImageEmpty: false, // Check if image are not inserted
     });
 
     const handleChange = (name, event) => {
         const value = event.target.value;
         setFormValues(previousState => {
-          return { ...previousState, [name]: value }
+            return { ...previousState, [name]: value }
         });
     }
 
     const addTag = (e) => {
-        if (e.key === 'Enter' || e.key === ',') {
+        if (e.key === 'Enter') {
             e.preventDefault();
             const value = formValues.ProductTags.trim();
             if (value && !ProductTagsList.includes(value) && ProductTagsList.length < maximumTags) {
@@ -66,19 +69,24 @@ const AddProduct = () => {
                         formValues.ProductPrice.trim() === "" ||
                         formValues.ProductDescription.trim() === "" ||
                         ProductTagsList.length === 0);
+        const setIfNumber = (numberRegex.test(formValues.ProductPrice) && Number(formValues.ProductPrice) > 0)
         const setIfImageEmpty = imageList.length === 0;
         setInputCorrectness({
             ifAnyEmpty: setIfAnyEmpty,
+            ifNumber: setIfNumber,
             ifImageEmpty: setIfImageEmpty,
         });
-        if(!setIfAnyEmpty && !setIfImageEmpty){
-            const product_information = {
-                productPics: imageList,
-                name: formValues.ProductName,
-                price: formValues.ProductName,
-                tags: ProductTagsList,
-                category: formValues.category
-            };
+        if(!setIfAnyEmpty && !setIfImageEmpty && setIfNumber){
+            const product_information = new FormData()
+            product_information.append("name",formValues.ProductName);
+            product_information.append("price",formValues.ProductPrice);
+            product_information.append("tags",JSON.stringify(ProductTagsList));
+            product_information.append("category",formValues.ProductCategory);
+            product_information.append("description",formValues.ProductDescription);
+            imageList.forEach((image)=>{
+                product_information.append("productPics[]",image);
+            })
+
             const ifValid = await postInformationToBackend("submitProduct", "seller", product_information);
             if(ifValid){
                 navigate("/AddProduct");
@@ -117,6 +125,8 @@ const AddProduct = () => {
                             </div>
                             <input type="text" value={formValues.ProductCategory} onChange={(event) => handleChange('ProductCategory', event)} placeholder='Product category' />
                             <input type="text" value={formValues.ProductPrice} onChange={(event) => handleChange('ProductPrice', event)} placeholder='Product price' />
+                            {!inputCorrectnessCheck.ifNumber && 
+                            (<p style={{ color: "red" }}> The input price should be a valid number and greater than 0 </p>)}
                             <textarea value={formValues.ProductDescription} onChange={(event) => handleChange('ProductDescription', event)} placeholder='Product descrption' />
                         </div>
                     </div>

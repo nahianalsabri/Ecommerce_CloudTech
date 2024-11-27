@@ -1,32 +1,30 @@
 import axios from "axios";
-let registration_information = [
-  {
-    userName: "qwe",
-    userEmailAddress: "qwe@qwe.qwe",
-    userPassword: "qwe",
-  },
-];
 
-let template_email_address = "";
-
-let OTP = "";
 export const baseURL = process.env.REACT_APP_API_URL;
+
+let product_list = [];
 
 export async function postInformationToBackend(order, role, information){
   let url = ""
   switch (order){
       case "register":
           url = `${baseURL}/${role}`;
+          return true;
       case "login":
           url = `${baseURL}/${role}/login`;
+          return true;
       case "email_verify":
           url = `${baseURL}/${role}/verify-email`;
+          return true;
       case "forgetPWD":
           url = `${baseURL}/${role}/forget-password`;
       case "resetPWD":
           url = `${baseURL}/${role}/update-forget-password`;
       case "submitProduct":
           url = `${baseURL}/${role}/add-product`
+          product_list.push(information);
+          console.log(product_list);
+          return true;
       default:
           console.log("no order");
   }
@@ -41,6 +39,19 @@ export async function postInformationToBackend(order, role, information){
       };
       return error;
     }
+}
+export function getProductList(){
+  return product_list;
+}
+export function removeProductList(index){
+  let new_list = []
+  product_list.map((item, i)=>{
+    if(i != index){
+      new_list.push(item);
+    }
+  });
+  product_list = new_list;
+  return product_list;
 }
 
 export async function getInformationToBackend(order, role){

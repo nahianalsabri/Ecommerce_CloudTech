@@ -86,7 +86,7 @@ const SignupSeller = () => {
                         if (remainingTime <= 0) {
                             clearInterval(interval);
                             console.log("Time out! ");
-                            navigate("/AddProduct");
+                            navigate("/login_seller");
                         } else {
                             console.log(`time: ${remainingTime} s`);
                             remainingTime--;

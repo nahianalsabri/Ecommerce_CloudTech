@@ -1,92 +1,147 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ImageGallery = () => {
-  const [images, setImages] = useState([]); // 用于存储图片的数组
+const ImageCarousel = () => {
+  const images = [
+    "https://via.placeholder.com/600x300?text=Image+1",
+    "https://via.placeholder.com/600x300?text=Image+2",
+    "https://via.placeholder.com/600x300?text=Image+3",
+    "https://via.placeholder.com/600x300?text=Image+4",
+  ]; // 图片路径数组
 
-  // 处理图片上传
-  const handleImageUpload = (e) => {
-    const files = e.target.files; // 获取上传的文件
-    const newImages = Array.from(files).map((file) => {
-      return URL.createObjectURL(file); // 将文件转换为 URL
-    });
-    setImages((prevImages) => [...prevImages, ...newImages]); // 将新图片添加到已有图片数组中
+  const [currentIndex, setCurrentIndex] = useState(0); // 当前图片索引
+  const [isPlaying, setIsPlaying] = useState(true); // 是否自动播放
+
+  // 切换到下一张图片
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
-  // 移除指定图片
-  const removeImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  // 切换到上一张图片
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
   };
+
+  // 自动播放功能
+  useEffect(() => {
+    let timer;
+    if (isPlaying) {
+      timer = setInterval(() => {
+        nextSlide();
+      }, 3000); // 每隔 3 秒切换一次
+    }
+    return () => clearInterval(timer); // 清除定时器
+  }, [isPlaying]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Arial" }}>
-      <h3>Dynamic Image Gallery</h3>
-
-      {/* 文件上传按钮 */}
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={handleImageUpload}
-        style={{ marginBottom: "20px" }}
-      />
-
-      {/* 图片展示区域 */}
+    <div
+      style={{
+        width: "600px",
+        margin: "50px auto",
+        textAlign: "center",
+        fontFamily: "Arial",
+        position: "relative",
+      }}
+    >
       <div
         style={{
-          display: "flex",
-          flexWrap: "wrap", // 自动换行
-          gap: "10px", // 图片间距
-          justifyContent: "center", // 居中对齐
+          position: "relative",
+          overflow: "hidden",
+          borderRadius: "10px",
+          boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
         }}
       >
-        {images.map((image, index) => (
-          <div
-            key={index}
-            style={{
-              position: "relative",
-              width: "150px",
-              height: "150px",
-              overflow: "hidden",
-              borderRadius: "10px",
-              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)",
-            }}
-          >
+        {/* 图片容器 */}
+        <div
+          style={{
+            display: "flex",
+            transform: `translateX(-${currentIndex * 100}%)`, // 平移显示当前图片
+            transition: "transform 0.5s ease", // 平滑过渡效果
+          }}
+        >
+          {images.map((image, index) => (
             <img
+              key={index}
               src={image}
-              alt={`Uploaded ${index}`}
+              alt={`Slide ${index + 1}`}
               style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover", // 图片自适应裁剪
+                width: "600px",
+                height: "300px",
+                objectFit: "cover",
+                flexShrink: 0, // 防止图片收缩
               }}
             />
-            <button
-              onClick={() => removeImage(index)}
-              style={{
-                position: "absolute",
-                top: "5px",
-                right: "5px",
-                backgroundColor: "red",
-                color: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: "20px",
-                height: "20px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "14px",
-              }}
-            >
-              ×
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      {/* 切换按钮 */}
+      <button
+        onClick={prevSlide}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "10px",
+          transform: "translateY(-50%)",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "30px",
+          height: "30px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        &#8249;
+      </button>
+      <button
+        onClick={nextSlide}
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "10px",
+          transform: "translateY(-50%)",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "30px",
+          height: "30px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        &#8250;
+      </button>
+
+      {/* 自动播放控制 */}
+      <div style={{ marginTop: "10px" }}>
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: isPlaying ? "#007bff" : "gray",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          {isPlaying ? "Pause" : "Play"}
+        </button>
       </div>
     </div>
   );
 };
 
-export default ImageGallery;
+export default ImageCarousel;
+
 

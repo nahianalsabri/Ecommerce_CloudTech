@@ -44,6 +44,36 @@
     background: #FF4141;
 }
 
+.nav-search{
+    display: flex;
+    left:150%
+    /* margin-left: 5%; */
+    /* width: 20%; */
+}
+.nav-search input{
+    height: 50px;
+    border-radius: 50px;
+    /* margin-left: 40%; */
+    font-size: 16px;
+    padding-left: 15px;
+}
+.nav-search button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    color: white;
+    background: #6691ff;
+    border-radius: 50px;
+    border: none;
+    right: 10px;
+    cursor: pointer;
+}
+.nav-search button:active{
+    transform: scale(0.90);
+    transition: 0.1s;
+}
+
 .nav-login-cart{
     display: flex;
     align-items: center;
@@ -70,9 +100,9 @@
 
 .nav-login-menu {
     align-items: center;
-    padding-left: 200px;
+    padding-left: 10px;
     position: 'relative';
-    display: 'inline-block' 
+    display: 'inline-block';
 }
 .nav-login-menu-button{
     width: 200px;

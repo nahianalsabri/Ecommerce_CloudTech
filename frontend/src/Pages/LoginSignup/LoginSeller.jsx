@@ -48,7 +48,7 @@ const LoginSeller = () => {
           }else{
             console.log("successfully login!");
             setUser({
-              userName: "User",
+              userName: "Seller",
               userRole: "Seller",
             })
             navigate("/");

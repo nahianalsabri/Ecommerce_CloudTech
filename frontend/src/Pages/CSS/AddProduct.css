@@ -1,12 +1,14 @@
 .AddProduct{
     width: 100%;
-    min-height: 100vh;
+    min-height: 180vh;
     background: #fce3fe;
     padding-top: 100px;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 .AddProduct-container{
     width: 90%;
+    height: 150vh;
     max-width: 1500px;
     background: white;
     margin: auto;
@@ -18,10 +20,12 @@
         display: flex;
         justify-self: space-between;
         gap: 20px;
+        height: 80%;
     }
 
         .AddProduct-ProductList{
-            height: 60vh;
+            width: 100%;
+            /* height: 90%; */
             background: #fce3fe;
             flex: 2;
             box-sizing: border-box;
@@ -38,7 +42,7 @@
             }
             .ProductList img{
                 align-self: center;
-                width: 80%;
+                width: 100%;
             }
             .ProductList img:hover{
                 transform: scale(1.05);
@@ -50,24 +54,36 @@
             }
 
             .ProductItem{
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 background: #ffffff;
                 border: 1px solid #000000;
                 font-size: 20px;
-                height: 40px;
+                height: 60px;
             }
             .ProductItem:hover{
                 transform: scale(1.05);
                 transition: 0.1s;
             }
+            .ProductItem:active{
+                transform: scale(0.90);
+                transition: 0.1s;
+            }
 
         .AddProduct-ProductTable{
-            height: 60vh;
+            /* height: 60vh; */
             background: #fce3fe;
             flex: 5;
             box-sizing: border-box;
             font-size: 28px;
             padding: 30px;
             overflow: auto;
+        }
+        .AddProduct-ProductTable button{
+            width: 100px;
+            height: 40px;
+            margin-left: 10px;
         }
             .ProductTable{
                 display: flex;
@@ -111,6 +127,45 @@
                 font-weight: 500;
                 cursor: pointer;
             }
+                .table{ 
+                    display: grid;
+                    grid-template-columns: 1.5fr 1fr;
+                    grid-template-rows: 60% 40%;
+                    grid-template-areas: "top-left top-right" "bottom bottom";
+                    /* gap: 10px; */
+                    height: 90%;
+                    margin: auto;
+                    margin-top: 3%;
+                    background: #ffffff;
+                    box-sizing: border-box;
+                }
+                    .table-img{
+                        grid-area: top-left;
+                        box-sizing: border-box;
+                    }
+                    .table-img img{
+                        padding: 10px;
+                        width: 95%;
+                        height: 95%;
+                    }
+
+                    .table-basicInfo{
+                        display: flex;
+                        grid-area: top-right;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                        gap: 10%;
+                    }
+
+                    .table-description{
+                        grid-area: bottom;
+                        word-break: break-word;
+                        padding: 10px;
+                        border: 1px solid #000000;
+                        overflow: auto;
+                    }
+
     .Continue{
         display: flex;
         justify-self: center;
