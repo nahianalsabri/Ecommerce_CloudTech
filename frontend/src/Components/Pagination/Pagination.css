@@ -1,0 +1,24 @@
+.Pagination{
+    margin: 0;
+    min-height: 20vh;
+    background: #fce3fe;
+    box-sizing: border-box;
+}
+    .Pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        padding-top: 50px;
+    }
+    .index {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        font-size: 28px;
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+        user-select: none
+    }

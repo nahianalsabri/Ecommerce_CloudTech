@@ -1,0 +1,37 @@
+.SearchList{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fce3fe;
+    padding-bottom: 15%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    min-height: 230vh;
+}
+    .SearchList-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(5, 2fr); 
+        /* min-height: 200vh; */
+        width: 90vw;
+        gap: 5%;
+    }
+    .SearchList-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 35vh;
+        box-sizing: border-box;
+        font-size: 16px;
+        user-select: none;
+    }
+    .SearchList-item img{
+        cursor: pointer;
+        width: 60%;
+    }
+    .SearchList-item img:hover {
+        transform: scale(1.05);
+        transition: 0.1s;
+    }

@@ -1,36 +1,54 @@
 import axios from "axios";
+import { store } from "../../reduxfolder/store";
 
 export const baseURL = process.env.REACT_APP_API_URL;
 
 let product_list = [];
+const idToken = store.getState();
+export async function postInformationToBackend(order, role, information) {
+  let url = "";
+  let auth = false;
+  console.log(information);
 
-export async function postInformationToBackend(order, role, information){
-  let url = ""
-  switch (order){
-      case "register":
-          url = `${baseURL}/${role}`;
-          return true;
-      case "login":
-          url = `${baseURL}/${role}/login`;
-          return true;
-      case "email_verify":
-          url = `${baseURL}/${role}/verify-email`;
-          return true;
-      case "forgetPWD":
-          url = `${baseURL}/${role}/forget-password`;
-      case "resetPWD":
-          url = `${baseURL}/${role}/update-forget-password`;
-      case "submitProduct":
-          url = `${baseURL}/${role}/add-product`
-          product_list.push(information);
-          console.log(product_list);
-          return true;
-      default:
-          console.log("no order");
+  switch (order) {
+    case "register":
+      url = `${baseURL}/${role}`;
+      break;
+    case "login":
+      url = `${baseURL}/${role}/login`;
+      break;
+    case "email_verify":
+      url = `${baseURL}/${role}/verify-email`;
+      break;
+    case "forgetPWD":
+      url = `${baseURL}/${role}/forgot-password`;
+      break;
+    case "resetPWD":
+      url = `${baseURL}/${role}/update-forgot-password`;
+      break;
+    case "submitProduct":
+      url = `${baseURL}/${role}/add-product`;
+
+      auth = true;
+      break;
+    default:
+      console.log("no order");
   }
-  try {
-      console.log(information);
-      const postData = await axios.post(url, information);
+  console.log(information);
+
+  if (auth) {
+    try {
+      console.log(url);
+      console.log("idToken", idToken);
+      console.log("information", information);
+
+      const postData = await axios.post(url, information, {
+        headers: {
+          Authorization: `Bearer ${idToken?.user?.authToken}`,
+        },
+      });
+      console.log("postData", postData);
+
       return postData?.data;
     } catch (e) {
       const error = {
@@ -39,14 +57,30 @@ export async function postInformationToBackend(order, role, information){
       };
       return error;
     }
+  } else {
+    try {
+      console.log(url);
+
+      const postData = await axios.post(url, information);
+      console.log(postData);
+
+      return postData?.data;
+    } catch (e) {
+      const error = {
+        message: e.message,
+        status: false,
+      };
+      return error;
+    }
+  }
 }
-export function getProductList(){
+export function getProductList() {
   return product_list;
 }
-export function removeProductList(index){
-  let new_list = []
-  product_list.map((item, i)=>{
-    if(i != index){
+export function removeProductList(index) {
+  let new_list = [];
+  product_list.map((item, i) => {
+    if (i != index) {
       new_list.push(item);
     }
   });
@@ -54,18 +88,29 @@ export function removeProductList(index){
   return product_list;
 }
 
-export async function getInformationToBackend(order, role){
-  // try {
-  //   const token = "email"; // Replace with your actual token
-  //   const response = await axios.get(`${baseURL}/user/me`, {
-  //     headers: {
-  //       Authorization: Bearer {token},
-  //     },
-  //   });
-  //   console.log(response.data);
-  // } catch (error) {
-  //   console.error(error);
-  // }
+export async function getInformationToBackend(order, role) {
+  let url = "";
+  let auth = false;
+  switch (order) {
+    case "getOrderIds":
+      url = `${baseURL}/${role}/orders`;
+      auth = true;
+      break;
+    default:
+      console.log("no order");
+  }
+  if (auth) {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 // export async function register(information) {
 //   try {
@@ -116,7 +161,7 @@ export async function getInformationToBackend(order, role){
 //     console.log(address);
 //     const postAddress = await axios.post(`${baseURL}/user/forget-password`, address);
 //     return postAddress?.data;
-//   } 
+//   }
 //   catch (e) {
 //     const error = {
 //       message: e.message,

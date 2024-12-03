@@ -1,97 +1,96 @@
-.OrderManagement{
-    width: 100%;
-    min-height: 150vh;
-    background: #fce3fe;
-    padding-top: 100px;
-    overflow-y: auto;
+.OrderManagement {
+  width: 100%;
+  min-height: 150vh;
+  background: #fce3fe;
+  padding-top: 100px;
+  overflow-y: auto;
 }
-    .OrderManagement-container{
-        width: 90%;
-        max-width: 1500px;
-        background: white;
-        margin: auto;
-        padding: 30px 40px;
-        box-sizing: border-box;
-    }
-    .OrderManagement-WorkingZone{
-        display: flex;
-        justify-self: space-between;
-        gap: 20px;
-    }
-        .OrderManagement-list{
-            height: 60vh;
-            background: #fce3fe;
-            flex: 2;
-            box-sizing: border-box;
-            padding: 30px;
-            font-size: 28px;
-            overflow:auto;
-        }
-            .OrderList{
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                padding: 10px;
-                border: 1px solid #000000;
-            }
-                .List{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    background: #ffffff;
-                    border: 1px solid #000000;
-                    font-size: 20px;
-                    height: 50px;
-                    cursor: pointer;
-                    
-                }
-                .List:hover{
-                    transform: scale(1.05);
-                    transition: 0.1s;
-                }
-                .List:active{
-                    transform: scale(0.90);
-                    transition: 0.1s;
-                }
-        .OrderManagement-content{
-            height: 60vh;
-            background: #fce3fe;
-            flex: 5;
-            box-sizing: border-box;
-            font-size: 28px;
-            padding: 30px;
-            overflow: auto;
-        }
-            .OrderContent{
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                padding: 10px;
-                border: 1px solid #000000;
-            }
-            .OrderContent-format-main{
-                display: grid;
-                grid-template-columns: 0.5fr 1fr 0.5fr 0.5fr 0.5fr;
-                align-items: center;
-                gap: 50px;
-                padding: 20px 0px;
-                color: #454545;
-                font-size: 16px;
-                font-weight: 600;
-            }
-                .Content{
-                    display: grid;
-                    grid-template-columns: 0.5fr 1fr 0.5fr 0.5fr 0.5fr;
-                    align-items: center;
-                    width: 100%;
-                    background: #ffffff;
-                    border: 1px solid #000000;
-                    font-size: 20px;
-                    height: 100px;
-                    gap:30px;
-                }
-                .Content img{
-                    height: 100%;
-                    max-height: 100px;
-                }
+.OrderManagement-container {
+  width: 90%;
+  max-width: 1500px;
+  background: white;
+  margin: auto;
+  padding: 30px 40px;
+  box-sizing: border-box;
+}
+.OrderManagement-WorkingZone {
+  display: flex;
+  justify-self: space-between;
+  gap: 20px;
+}
+.OrderManagement-list {
+  height: 60vh;
+  background: #fce3fe;
+  flex: 2;
+  box-sizing: border-box;
+  padding: 30px;
+  font-size: 28px;
+  overflow: auto;
+}
+.OrderList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  border: 1px solid #000000;
+}
+.List {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #000000;
+  font-size: 20px;
+  height: 50px;
+  cursor: pointer;
+}
+.List:hover {
+  transform: scale(1.05);
+  transition: 0.1s;
+}
+.List:active {
+  transform: scale(0.9);
+  transition: 0.1s;
+}
+.OrderManagement-content {
+  height: 60vh;
+  background: #fce3fe;
+  flex: 5;
+  box-sizing: border-box;
+  font-size: 28px;
+  padding: 30px;
+  overflow: auto;
+}
+.OrderContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  border: 1px solid #000000;
+}
+.OrderContent-format-main {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.5fr 0.5fr 0.5fr;
+  align-items: center;
+  gap: 50px;
+  padding: 20px 0px;
+  color: #454545;
+  font-size: 16px;
+  font-weight: 600;
+}
+.Content {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.5fr 0.5fr 0.5fr;
+  align-items: center;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #000000;
+  font-size: 20px;
+  height: 100px;
+  gap: 30px;
+}
+.Content img {
+  height: 100%;
+  max-height: 100px;
+}

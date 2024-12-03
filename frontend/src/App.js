@@ -15,7 +15,7 @@ import Resetpassword from './Pages/LoginSignup/Resetpassword';
 import AddProduct from './Pages/CustomerSeller/AddProduct';
 import ProductInformation from './Pages/CustomerSeller/ProductInformation';
 import OrderManagement from './Pages/CustomerSeller/OrderManagement';
-import Search from './Pages/Search'
+import Search from './Pages/Search';
 import Footer from './Components/Footer/Footer';
 import Test from './Pages/test'
 import men_banner from './Components/Assets/banner_mens.png'
@@ -49,9 +49,7 @@ function App() {
         <Route path='/AddProduct' element={<AddProduct/>}/>
         <Route path='/ProductInformation' element={<ProductInformation/>}/>
         <Route path='/OrderManagement' element={<OrderManagement/>}/>
-        <Route path='/search' element={<Search/>}>
-          <Route path=':item' element={<Search/>}/>
-        </Route>
+        <Route path="/search" element={<Search />} />
         <Route path='/test' element={<Test/>}/>
       </Routes>
       <Footer/>

@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postInformationToBackend } from "../../Components/Registration/registration";
-import { setUser, getUser } from "../../Components/Registration/user";
+import { getUser, setUser } from "../../Components/Registration/user";
+import {
+  setAuthStatus,
+  setAuthToken,
+} from "../../reduxfolder/reducers/authSlice";
 import "../CSS/LoginSignup.css";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [formValues, setFormValues] = useState({
@@ -31,25 +37,34 @@ const Login = () => {
     };
     const setIsValidEmail = emailRegex.test(formValues.userEmailAddress);
     const setIfAnyEmpty =
-      (formValues.userEmailAddress.trim() === "" ||
-      formValues.userPassword.trim() === "");
-    const setIsCheckedCorrectness = await postInformationToBackend("login", "user", login_information);
-    console.log("llllllll", !setIsCheckedCorrectness?.status);
-    setInputCorrectness({
-      ...formValues,
-      isValidEmail: setIsValidEmail,
-      ifAnyEmpty: setIfAnyEmpty,
-      isCheckedCorrectness: setIsCheckedCorrectness,
-    });
-    if (setIsValidEmail && !setIfAnyEmpty && setIsCheckedCorrectness) {
-      if(getUser().userLogin){
-        alert("You must log out before log into new account")
-      }else{
+      formValues.userEmailAddress.trim() === "" ||
+      formValues.userPassword.trim() === "";
+    const setIsCheckedCorrectness = await postInformationToBackend(
+      "login",
+      "user",
+      login_information
+    );
+
+    if (!setIsCheckedCorrectness?.status) {
+      setInputCorrectness({
+        ...formValues,
+        isValidEmail: setIsValidEmail,
+        ifAnyEmpty: setIfAnyEmpty,
+        isCheckedCorrectness: setIsCheckedCorrectness,
+      });
+    } else {
+      console.log(setIsCheckedCorrectness);
+
+      dispatch(setAuthStatus(true));
+      dispatch(setAuthToken(setIsCheckedCorrectness?.token));
+      if (getUser().userLogin) {
+        alert("You must log out before log into new account");
+      } else {
         console.log("successfully login!");
         setUser({
           userName: "User",
           userRole: "Customer",
-        })
+        });
         navigate("/");
       }
     }
